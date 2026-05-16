@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Responses — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2744;
+      --gold: #b8973e;
+      --gold-pale: #f5edda;
+      --white: #ffffff;
+      --off-white: #faf9f6;
+      --text: #2c2c2c;
+      --text-muted: #6b6b6b;
+      --border: #ddd5c0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--off-white); color: var(--text); }
+
+    header {
+      background: var(--navy);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--white);
+    }
+    header span { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem; }
+
+    /* Login */
+    #login-section {
+      max-width: 360px;
+      margin: 4rem auto;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      text-align: center;
+    }
+    #login-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+    }
+    #login-section input {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    #login-section button {
+      background: var(--navy);
+      color: var(--gold);
+      border: none;
+      padding: 0.75rem 2rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      width: 100%;
+    }
+    #login-error { color: #c0392b; font-size: 0.8rem; margin-top: 0.5rem; }
+
+    /* Dashboard */
+    #dashboard { display: none; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      text-align: center;
+    }
+    .stat-card .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .stat-card .lbl {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--gold-pale);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      font-size: 0.82rem;
+      margin-bottom: 2rem;
+    }
+    th {
+      background: var(--navy);
+      color: var(--gold);
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    td {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--gold-pale); }
+
+    .allergen-badge {
+      background: #fce4ec;
+      color: #c62828;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+    }
+
+    .btn-export {
+      background: var(--navy);
+      color: var(--gold);
+      border: none;
+      padding: 0.65rem 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+    }
+    .btn-export:hover { background: #243360; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Wedding Menu — Responses</h1>
+  <span id="header-count"></span>
+</header>
+
+<main>
+
+  <div id="login-section">
+    <h2>Admin access</h2>
+    <input type="password" id="admin-pw" placeholder="Enter admin password" />
+    <button onclick="checkLogin()">Enter</button>
+    <p id="login-error"></p>
+  </div>
+
+  <div id="dashboard">
+    <!-- Stats -->
+    <div class="stat-grid" id="stats"></div>
+
+    <!-- Export -->
+    <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+
+    <!-- Table -->
+    <p class="section-title">All responses</p>
+    <table id="responses-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Diet</th>
+          <th>Starter</th>
+          <th>Main</th>
+          <th>Dessert</th>
+          <th>Allergens</th>
+          <th>Submitted</th>
+        </tr>
+      </thead>
+      <tbody id="responses-body"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<script>
+  // ─────────────────────────────────────────
+  // CONFIG
+  // ─────────────────────────────────────────
+  const SUPABASE_URL = 'https://rwvwapbnbsocxltdpjam.supabase.co/rest/v1/';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3dndhcGJuYnNvY3hsdGRwamFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDY3ODAsImV4cCI6MjA5NDUyMjc4MH0.9KYznWgr86MCq6ReiFhTV_lZyui9g1KwGHmESxrj9uA';
+  const ADMIN_PASSWORD = 'pengi02'; // change this!
+  // ─────────────────────────────────────────
+
+  let allData = [];
+
+  function checkLogin() {
+    const pw = document.getElementById('admin-pw').value;
+    if (pw === ADMIN_PASSWORD) {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadData();
+    } else {
+      document.getElementById('login-error').textContent = 'Incorrect password.';
+    }
+  }
+  document.getElementById('admin-pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkLogin();
+  });
+
+  const DIET_LABELS = {
+    meat_fish: 'Meat & fish', meat_only: 'Meat only',
+    pescatarian: 'Pescatarian', vegetarian: 'Vegetarian', vegan: 'Vegan'
+  };
+  const STARTER_LABELS = {
+    artichoke: 'Roasted artichoke', fishcake: 'Spiced fishcake', tandoori_chicken: 'Tandoori chicken'
+  };
+  const DESSERT_LABELS = {
+    caramel_flan: 'Caramel flan', apple_tart: 'Apple tarte fine', lemon_tart: 'Lemon tart'
+  };
+
+  async function loadData() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/responses?select=*&order=submitted_at.asc`, {
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    allData = await res.json();
+    renderTable(allData);
+    renderStats(allData);
+    document.getElementById('header-count').textContent = allData.length + ' responses';
+  }
+
+  function renderStats(data) {
+    const total = data.length;
+    const diets = {};
+    const starters = {};
+    const desserts = {};
+    data.forEach(r => {
+      diets[r.diet] = (diets[r.diet]||0) + 1;
+      starters[r.starter] = (starters[r.starter]||0) + 1;
+      desserts[r.dessert] = (desserts[r.dessert]||0) + 1;
+    });
+    const allergens = data.filter(r => r.allergens).length;
+
+    let html = `<div class="stat-card"><div class="num">${total}</div><div class="lbl">Total responses</div></div>`;
+    Object.entries(diets).forEach(([k,v]) => {
+      html += `<div class="stat-card"><div class="num">${v}</div><div class="lbl">${DIET_LABELS[k]||k}</div></div>`;
+    });
+    html += `<div class="stat-card"><div class="num">${allergens}</div><div class="lbl">Allergen notes</div></div>`;
+    document.getElementById('stats').innerHTML = html;
+  }
+
+  function renderTable(data) {
+    const tbody = document.getElementById('responses-body');
+    tbody.innerHTML = data.map(r => `
+      <tr>
+        <td><strong>${r.guest_name}</strong></td>
+        <td>${DIET_LABELS[r.diet]||r.diet}</td>
+        <td>${STARTER_LABELS[r.starter]||r.starter}</td>
+        <td style="font-size:0.75rem;">${r.main||'—'}</td>
+        <td>${DESSERT_LABELS[r.dessert]||r.dessert}</td>
+        <td>${r.allergens ? `<span class="allergen-badge">${r.allergens}</span>` : '—'}</td>
+        <td style="color:var(--text-muted); font-size:0.75rem;">${new Date(r.submitted_at).toLocaleDateString('en-GB')}</td>
+      </tr>`).join('');
+  }
+
+  function exportCSV() {
+    const headers = ['Name','Diet','Starter','Main','Dessert','Allergens','Submitted'];
+    const rows = allData.map(r => [
+      r.guest_name,
+      DIET_LABELS[r.diet]||r.diet,
+      STARTER_LABELS[r.starter]||r.starter,
+      r.main||'',
+      DESSERT_LABELS[r.dessert]||r.dessert,
+      r.allergens||'',
+      new Date(r.submitted_at).toLocaleDateString('en-GB')
+    ]);
+    const csv = [headers, ...rows].map(r => r.map(c => `"${(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'wedding-menu-responses.csv';
+    a.click();
+  }
+</script>
+</body>
+</html>

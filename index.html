@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Menu Choice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2744;
+      --gold: #b8973e;
+      --gold-light: #d4af6a;
+      --gold-pale: #f5edda;
+      --white: #ffffff;
+      --off-white: #faf9f6;
+      --text: #2c2c2c;
+      --text-muted: #6b6b6b;
+      --border: #ddd5c0;
+      --error: #c0392b;
+      --success: #2c6e49;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--off-white);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--navy);
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(184,151,62,0.04) 40px,
+        rgba(184,151,62,0.04) 41px
+      );
+    }
+    .star-divider {
+      color: var(--gold);
+      font-size: 1.1rem;
+      letter-spacing: 0.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    header h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    header p {
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.75rem;
+    }
+    .gold-line {
+      width: 80px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.25rem auto;
+    }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    /* ── Section titles ── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--gold-pale);
+    }
+    .card-title-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--gold-light);
+      font-size: 0.75rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Form fields ── */
+    label.field-label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--white);
+      appearance: none;
+      -webkit-appearance: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1rem;
+    }
+    select:focus, input[type="text"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .select-wrap {
+      position: relative;
+    }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      pointer-events: none;
+      font-size: 0.9rem;
+      margin-top: -0.5rem;
+    }
+
+    /* ── Diet section ── */
+    .diet-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 480px) {
+      .diet-grid { grid-template-columns: 1fr; }
+    }
+    .diet-option {
+      position: relative;
+    }
+    .diet-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+    }
+    .diet-option label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: var(--text);
+      transition: all 0.18s;
+      background: var(--white);
+    }
+    .diet-option label .diet-icon {
+      font-size: 1rem;
+    }
+    .diet-option input:checked + label {
+      border-color: var(--gold);
+      background: var(--gold-pale);
+      color: var(--navy);
+      font-weight: 500;
+    }
+    .diet-option label:hover {
+      border-color: var(--gold-light);
+    }
+
+    /* ── Dish choice cards ── */
+    .dish-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    @media (max-width: 480px) {
+      .dish-grid { grid-template-columns: 1fr; }
+    }
+    .dish-option {
+      position: relative;
+    }
+    .dish-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+    }
+    .dish-option label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.18s;
+      background: var(--white);
+      height: 100%;
+    }
+    .dish-option input:checked + label {
+      border-color: var(--gold);
+      background: var(--gold-pale);
+    }
+    .dish-option label:hover {
+      border-color: var(--gold-light);
+    }
+    .dish-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--navy);
+    }
+    .dish-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .dish-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      margin-top: 0.2rem;
+    }
+    .tag-vegan { background: #e8f5e9; color: #2e7d32; }
+    .tag-veg { background: #e8f5e9; color: #388e3c; }
+    .tag-fish { background: #e3f2fd; color: #1565c0; }
+    .tag-meat { background: #fce4ec; color: #c62828; }
+
+    /* ── Allergen ── */
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      margin-bottom: 0;
+    }
+
+    /* ── Submit btn ── */
+    .submit-wrap {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .btn-submit {
+      background: var(--navy);
+      color: var(--gold-light);
+      border: none;
+      padding: 0.9rem 3rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover { background: #243360; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── Messages ── */
+    .msg {
+      display: none;
+      padding: 1rem 1.25rem;
+      border-radius: 3px;
+      font-size: 0.88rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .msg.error { background: #fdecea; color: var(--error); border: 1px solid #f5c6cb; display: block; }
+    .msg.success { background: #eaf4ee; color: var(--success); border: 1px solid #b7dfbf; display: block; }
+
+    /* ── Success screen ── */
+    #success-screen {
+      display: none;
+      text-align: center;
+      padding: 4rem 1.5rem;
+    }
+    #success-screen .big-check {
+      font-size: 3rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    #success-screen h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+    }
+    #success-screen p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ── Info note ── */
+    .info-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: var(--gold-pale);
+      border-left: 3px solid var(--gold);
+      padding: 0.6rem 0.85rem;
+      margin-bottom: 1rem;
+      border-radius: 0 3px 3px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="star-divider">✦ ✦ ✦</span>
+  <h1><em>Join us</em> to celebrate</h1>
+  <div class="gold-line"></div>
+  <p>Wedding Menu Selection</p>
+</header>
+
+<main>
+
+  <!-- Success screen (hidden until submitted) -->
+  <div id="success-screen">
+    <div class="big-check">✦</div>
+    <h2>Thank you!</h2>
+    <p>Your menu choices have been saved.<br>We look forward to celebrating with you.</p>
+  </div>
+
+  <!-- The form -->
+  <form id="menuForm" novalidate>
+
+    <!-- 1. Guest name -->
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-num">1</span>
+        Your name
+      </div>
+      <label class="field-label" for="guestName">Select your name from the list</label>
+      <div class="select-wrap">
+        <select id="guestName" name="guestName" required>
+          <option value="">— Please select —</option>
+          <!-- Guest names populated by JS from config -->
+        </select>
+      </div>
+      <div id="already-submitted" class="msg error" style="display:none; margin-top:0;">
+        It looks like we already have your menu choice saved. Please get in touch if you need to make a change.
+      </div>
+    </div>
+
+    <!-- 2. Dietary preference -->
+    <div class="card" id="card-diet" class="hidden">
+      <div class="card-title">
+        <span class="card-title-num">2</span>
+        Dietary preference
+      </div>
+      <div class="diet-grid">
+        <div class="diet-option">
+          <input type="radio" name="diet" id="diet-meat-fish" value="meat_fish">
+          <label for="diet-meat-fish"><span class="diet-icon">🥩</span> Meat &amp; fish</label>
+        </div>
+        <div class="diet-option">
+          <input type="radio" name="diet" id="diet-meat-only" value="meat_only">
+          <label for="diet-meat-only"><span class="diet-icon">🍗</span> Meat, no fish</label>
+        </div>
+        <div class="diet-option">
+          <input type="radio" name="diet" id="diet-pescatarian" value="pescatarian">
+          <label for="diet-pescatarian"><span class="diet-icon">🐟</span> Pescatarian</label>
+        </div>
+        <div class="diet-option">
+          <input type="radio" name="diet" id="diet-vegetarian" value="vegetarian">
+          <label for="diet-vegetarian"><span class="diet-icon">🥦</span> Vegetarian</label>
+        </div>
+        <div class="diet-option">
+          <input type="radio" name="diet" id="diet-vegan" value="vegan">
+          <label for="diet-vegan"><span class="diet-icon">🌱</span> Vegan</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Starter -->
+    <div class="card hidden" id="card-starter">
+      <div class="card-title">
+        <span class="card-title-num">3</span>
+        Starter
+      </div>
+      <div class="dish-grid" id="starter-options">
+        <!-- populated by JS based on diet -->
+      </div>
+    </div>
+
+    <!-- 4. Main (info only) -->
+    <div class="card hidden" id="card-main">
+      <div class="card-title">
+        <span class="card-title-num">4</span>
+        Main course
+      </div>
+      <div class="info-note" id="main-info">
+        <!-- populated by JS -->
+      </div>
+      <p style="font-size:0.82rem; color:var(--text-muted);">Served with basmati rice, fresh naan and vegetable samosas.</p>
+    </div>
+
+    <!-- 5. Dessert -->
+    <div class="card hidden" id="card-dessert">
+      <div class="card-title">
+        <span class="card-title-num">5</span>
+        Dessert
+      </div>
+      <div class="dish-grid" id="dessert-options">
+        <!-- populated by JS based on diet -->
+      </div>
+    </div>
+
+    <!-- 6. Allergens -->
+    <div class="card hidden" id="card-allergens">
+      <div class="card-title">
+        <span class="card-title-num">6</span>
+        Allergens &amp; dietary notes
+      </div>
+      <label class="field-label" for="allergens">Please list any allergies or dietary requirements (leave blank if none)</label>
+      <textarea id="allergens" name="allergens" placeholder="e.g. nut allergy, gluten free, dairy intolerant…"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-wrap hidden" id="submit-wrap">
+      <div id="form-error" class="msg error" style="display:none;"></div>
+      <button type="submit" class="btn-submit" id="submitBtn">Confirm my choices</button>
+    </div>
+
+  </form>
+
+</main>
+
+<footer>
+  Made with love ✦ Please submit your choices by [01/09/2026]
+</footer>
+
+<script>
+  // ─────────────────────────────────────────────
+  // CONFIG — edit this section
+  // ─────────────────────────────────────────────
+  const SUPABASE_URL = 'https://rwvwapbnbsocxltdpjam.supabase.co/rest/v1/';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3dndhcGJuYnNvY3hsdGRwamFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDY3ODAsImV4cCI6MjA5NDUyMjc4MH0.9KYznWgr86MCq6ReiFhTV_lZyui9g1KwGHmESxrj9uA';
+
+  const GUEST_NAMES = [
+    // Add all guest names here exactly as you want them displayed
+  "Zee",
+  "Els", 
+  "Jonathan Harris",
+  "Julie Harris",
+  "Matthew Powell",
+  "Sabaa Malik",
+  "Amara Malik",
+  "Tom Sandey",
+  "Becky Belton",
+  "Finn Sandey",
+  "Mark Sandey",
+  "Tej M",
+  "Kate Sandey",
+  "Sadia Malik",
+  "Yousuf Malik",
+  "Rion Juttla",
+  "Ailsa Noble",
+  "Steve Noble",
+  "Elin Noble",
+  "Lauren Noble",
+  "Piper Jones",
+  "Olivia Sharp",
+  "Marja Hiscott",
+  "Pat",
+  "Eleanor Hughes",
+  "Peter Harris",
+  "Marie Harris",
+  "Ella Harris",
+  "Melody",
+  "Sol",
+  "Iola",
+  "Zeeshan Malik",
+  "Els Harris",
+  "Pirasanna Sasikanthan",
+  "Ninieck Vohra",
+  "Chahat Bains",
+  "Blake Woods",
+  "Daina Brook",
+  "Ellie K",
+  "Alexander Barrezueta Gonzalez",
+  ];
+
+  // Menu items: { id, name, desc, tags, diets[] }
+  // diets: which dietary preferences can see this option
+  const STARTERS = [
+    {
+      id: 'artichoke',
+      name: 'Mushroom Crostini',
+      desc: 'Crostini topped with finely chopped mushrooms, garlic, herbs and a baby spinach pesto. Also available as Vegan and Gluten Free, please leave in notes if required!  *Ciabatta may contain Sesame',
+      tag: 'veg',
+      tagLabel: 'Vegetarian',
+      diets: ['meat_fish', 'meat_only', 'pescatarian', 'vegetarian', 'vegan']
+    },
+    {
+      id: 'fishcake',
+      name: 'Thai fish cake',
+      desc: 'Spicy Thai fish cake on a bed of leaves, served with sweet chilli sauce. *Sweet Chilli Sauce may contain Nuts, Peanuts & Sesame',
+      tag: 'fish',
+      tagLabel: 'Fish',
+      diets: ['meat_fish', 'pescatarian']
+    },
+    {
+      id: 'tandoori_chicken',
+      name: 'Tandoori chicken',
+      desc: 'Tandoori Chicken thigh on a bed of leaves. Gluten free.',
+      tag: 'meat',
+      tagLabel: 'Meat',
+      diets: ['meat_fish', 'meat_only']
+    }
+  ];
+
+  const MAINS = {
+    meat_fish:     'Spicy tomato-based lamb curry & Butter Chicken curry & Daal & Rice & Naan & Samosas',
+    meat_only:     'Spicy tomato-based lamb curry & Butter Chicken curry & Daal & Rice & Naan & Samosas',
+    pescatarian:   'Malaysian curry with sweet potato, peppers & aubergine & Daal & Rice & Naan & Samosas',
+    vegetarian:    'Malaysian curry with sweet potato, peppers & aubergine & Daal & Rice & Naan & Samosas',
+    vegan:         'Malaysian curry with sweet potato, peppers & aubergine & Daal & Rice & Naan & Samosas'
+  };
+
+  const DESSERTS = [
+    {
+      id: 'caramel_flan',
+      name: 'Caramel flan',
+      desc: 'Classic baked custard with caramel sauce & vanilla ice cream',
+      tag: 'veg',
+      tagLabel: 'Vegetarian',
+      diets: ['meat_fish', 'meat_only', 'pescatarian', 'vegetarian']
+    },
+    {
+      id: 'apple_tart',
+      name: 'Normandy French Apple Tart',
+      desc: 'Layered apples baked on a crème patisserie & sweet pastry case finished with a light apricot glaze – Served with cream or custard',
+      tag: 'veg',
+      tagLabel: 'Vegetarian',
+      diets: ['meat_fish', 'meat_only', 'pescatarian', 'vegetarian']
+    },
+    {
+      id: 'lemon_tart',
+      name: 'Lemon Tart',
+      desc: 'Traditional lemon curd made with fresh lemon juice in a sweet pastry case finished with an apricot glaze',
+      tag: 'veg',
+      tagLabel: 'Vegetarian',
+      diets: ['meat_fish', 'meat_only', 'pescatarian', 'vegetarian']
+    },
+    {
+      id: 'vegan_option',
+      name: 'Vegan Ice Cream or Brownie',
+      desc: 'Soft & indulgent chocolate brownie served raspberries and vanilla ice cream',
+      tag: 'vegan',
+      tagLabel: 'Vegan',
+      diets: ['vegan']
+    }
+  ];
+  // ─────────────────────────────────────────────
+
+  // Populate guest dropdown
+  const nameSelect = document.getElementById('guestName');
+  GUEST_NAMES.sort().forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    nameSelect.appendChild(opt);
+  });
+
+  function tagClass(tag) {
+    return { veg: 'tag-veg', vegan: 'tag-vegan', fish: 'tag-fish', meat: 'tag-meat' }[tag] || 'tag-veg';
+  }
+
+  function renderDishes(containerId, dishes, diet, groupName) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    const available = dishes.filter(d => d.diets.includes(diet));
+    available.forEach(dish => {
+      container.innerHTML += `
+        <div class="dish-option">
+          <input type="radio" name="${groupName}" id="${groupName}_${dish.id}" value="${dish.id}" required>
+          <label for="${groupName}_${dish.id}">
+            <span class="dish-name">${dish.name}</span>
+            <span class="dish-desc">${dish.desc}</span>
+            <span class="dish-tag ${tagClass(dish.tag)}">${dish.tagLabel}</span>
+          </label>
+        </div>`;
+    });
+  }
+
+  function showCard(id) { document.getElementById(id).classList.remove('hidden'); }
+  function hideCard(id) { document.getElementById(id).classList.add('hidden'); }
+
+  // Diet change → update visible sections
+  document.querySelectorAll('input[name="diet"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const diet = radio.value;
+      renderDishes('starter-options', STARTERS, diet, 'starter');
+      renderDishes('dessert-options', DESSERTS, diet, 'dessert');
+      document.getElementById('main-info').textContent = 'Your main course will be: ' + MAINS[diet];
+      showCard('card-starter');
+      showCard('card-main');
+      showCard('card-dessert');
+      showCard('card-allergens');
+      showCard('submit-wrap');
+    });
+  });
+
+  // Guest name change → show diet card, check if already submitted
+  nameSelect.addEventListener('change', async () => {
+    const name = nameSelect.value;
+    document.getElementById('already-submitted').style.display = 'none';
+    ['card-diet','card-starter','card-main','card-dessert','card-allergens','submit-wrap'].forEach(hideCard);
+    if (!name) return;
+
+    // Check if already submitted
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/responses?guest_name=eq.${encodeURIComponent(name)}&select=id`, {
+        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+      });
+      const data = await res.json();
+      if (data && data.length > 0) {
+        document.getElementById('already-submitted').style.display = 'block';
+        return;
+      }
+    } catch (e) {}
+
+    showCard('card-diet');
+  });
+
+  // Form submit
+  document.getElementById('menuForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('form-error');
+    errorEl.style.display = 'none';
+
+    const guestName = document.getElementById('guestName').value;
+    const diet = document.querySelector('input[name="diet"]:checked')?.value;
+    const starter = document.querySelector('input[name="starter"]:checked')?.value;
+    const dessert = document.querySelector('input[name="dessert"]:checked')?.value;
+    const allergens = document.getElementById('allergens').value.trim();
+
+    if (!guestName || !diet || !starter || !dessert) {
+      errorEl.textContent = 'Please complete all sections before submitting.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const payload = {
+      guest_name: guestName,
+      diet,
+      starter,
+      main: MAINS[diet],
+      dessert,
+      allergens: allergens || null,
+      submitted_at: new Date().toISOString()
+    };
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/responses`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok || res.status === 201) {
+        document.getElementById('menuForm').style.display = 'none';
+        document.getElementById('success-screen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const err = await res.text();
+        throw new Error(err);
+      }
+    } catch (err) {
+      errorEl.textContent = 'Something went wrong — please try again or contact us directly.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Confirm my choices';
+    }
+  });
+</script>
+</body>
+</html>
